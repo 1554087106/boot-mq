@@ -1,9 +1,7 @@
 package org.whz.producer.conf;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -20,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@EnableRabbit
 public class RabbitMQQueueConfig {
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -29,6 +26,8 @@ public class RabbitMQQueueConfig {
     public static final String QUEUE_NAME_NEW = "new-hongzhi-queue";
 
     public static final String QUEUE_NAME_NON_PERSIS = "hongzhi-queue-no-persis";
+    public static final String EXCHANGE_FANOUT_NAME = "hongzhi-fanout-exchange";
+
     private final AmqpAdmin amqpAdmin;
 
     public RabbitMQQueueConfig(AmqpAdmin amqpAdmin) {
@@ -68,6 +67,28 @@ public class RabbitMQQueueConfig {
         return new Queue(QUEUE_NAME_NON_PERSIS, durable);
     }
 
+    /**
+     * 生成一个名称随机 非持久化 非持久化 独占 自动删除的队列
+     * @return
+     */
+    @Bean
+    public Queue anonymousQueue1() {
+        return new AnonymousQueue();
+    }
+    @Bean
+    public Queue anonymousQueue2() {
+        return new AnonymousQueue();
+    }
+
+    /**
+     * 交换机的fanout模式
+     * @return
+     */
+    @Bean
+    public FanoutExchange fanoutExchange() {
+        return new FanoutExchange(EXCHANGE_FANOUT_NAME);
+    }
+
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
@@ -87,6 +108,19 @@ public class RabbitMQQueueConfig {
         factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return factory;
     }
+
+    /**
+     * 绑定交换机和队列
+     * @return
+     */
+    public Binding binding() {
+        return BindingBuilder.bind(anonymousQueue1()).to(fanoutExchange());
+    }
+
+    public Binding binding1() {
+        return BindingBuilder.bind(anonymousQueue2()).to(fanoutExchange());
+    }
+
 
 
 

@@ -13,6 +13,11 @@ import org.whz.producer.conf.RabbitMQQueueConfig;
  */
 @Service
 public class ProducerService {
+    /**
+     * RabbitTemplate默认将消息发送到默认交换机
+     * 每个队列都会自动绑定到名称为队列名的绑定键的默认交换机上
+     * 这就是为什么我们可以使用队列名作为路由键来确保消息最终进入队列中
+     */
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
