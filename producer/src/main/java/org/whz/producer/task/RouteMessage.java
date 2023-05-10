@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.whz.producer.service.MessagePublisher;
-import org.whz.producer.service.ProducerService;
+import org.whz.producer.service.MessageRoute;
+
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,19 +16,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Description 每5秒钟发布一条消息
  */
 @Slf4j
-//@Component
-public class PublishMessage {
+@Component
+public class RouteMessage {
     /**
      * 线程安全的计数器
      */
     AtomicInteger count = new AtomicInteger(0);
-//    @Autowired
-    private MessagePublisher messagePublisher;
+    @Autowired
+    private MessageRoute messageRoute;
 
     @Scheduled(fixedRate = 1000)
-    public void publishMessage() {
+    public void sendMessage() {
          log.info("发布消息{}：{}", count.get(), LocalDateTime.now());
-         messagePublisher.publish("我是一条消息" + count.get());
+        messageRoute.send("我是一条消息" + count.get());
          count.addAndGet(1);
     }
 }

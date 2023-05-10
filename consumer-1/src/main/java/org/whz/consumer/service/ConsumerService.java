@@ -26,7 +26,7 @@ public class ConsumerService {
      * @param channel
      * @param tag
      */
-    @RabbitListener(queues = "hongzhi-queue", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(queues = "hongzhi-publish-queue", containerFactory = "rabbitListenerContainerFactory")
     public void receiveMessage(String message,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long tag) {

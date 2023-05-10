@@ -36,7 +36,7 @@ public class SubscribeConsumerService {
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
 
-        log.info("订阅消息: {} \r\n 匿名队列名称: {}", message, anonymousQueue.getName());
+        log.info("\r\n订阅消息: {} \r\n 匿名队列名称: {}", message, anonymousQueue.getName());
         // 收到确认消息
         if (channel.isOpen()) {
             try {

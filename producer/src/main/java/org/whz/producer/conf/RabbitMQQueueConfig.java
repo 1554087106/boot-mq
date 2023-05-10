@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @author: hong-zhi
@@ -27,6 +28,8 @@ public class RabbitMQQueueConfig {
 
     public static final String QUEUE_NAME_NON_PERSIS = "hongzhi-queue-no-persis";
     public static final String EXCHANGE_FANOUT_NAME = "hongzhi-fanout-exchange";
+    // hongzhi-direct-exchange  Direct模式交换机名称
+    public static final String EXCHANGE_DIRECT_NAME = "hongzhi-direct-exchange";
 
     private final AmqpAdmin amqpAdmin;
 
@@ -90,6 +93,7 @@ public class RabbitMQQueueConfig {
     }
 
     @Bean
+    @Primary
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
 
@@ -109,6 +113,7 @@ public class RabbitMQQueueConfig {
         return factory;
     }
 
+    @Bean
     /**
      * 绑定交换机和队列
      * @return
@@ -117,9 +122,11 @@ public class RabbitMQQueueConfig {
         return BindingBuilder.bind(anonymousQueue1()).to(fanoutExchange());
     }
 
+    @Bean
     public Binding binding1() {
         return BindingBuilder.bind(anonymousQueue2()).to(fanoutExchange());
     }
+
 
 
 
