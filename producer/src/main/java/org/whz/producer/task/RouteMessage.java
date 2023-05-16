@@ -16,13 +16,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Description 每5秒钟发布一条消息
  */
 @Slf4j
-@Component
+//@Component
 public class RouteMessage {
     /**
      * 线程安全的计数器
      */
     AtomicInteger count = new AtomicInteger(0);
-    @Autowired
+//    @Autowired
     private MessageRoute messageRoute;
 
     @Scheduled(fixedRate = 1000)

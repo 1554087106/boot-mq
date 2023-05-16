@@ -58,7 +58,6 @@ public class ConsumerService {
         }
         /**
          * 手动方式关闭Channel 会报错 Channel closed; cannot ack/nack
-         * TODO 为什么会报错？
          * SpringBoot AMPQ自动配置CachingConnectionFactory 缓存Channel会在使用完毕后自动返回给缓存池 并且自动关闭
          * 所以不需要手动关闭Channel
          *

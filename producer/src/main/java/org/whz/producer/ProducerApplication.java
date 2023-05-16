@@ -17,10 +17,7 @@ public class ProducerApplication {
 
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext applicationContext = SpringApplication.run(ProducerApplication.class, args);
-		FanoutExchange fanoutExchange = applicationContext.getBean(FanoutExchange.class);
-
-		log.info("fanoutExchange: {}", fanoutExchange);
+		SpringApplication.run(ProducerApplication.class, args);
 	}
 
 }
